@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Islamic Will</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c5f2d, #4a7c59);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin: 10px 0;
+            color: #ffd700;
+        }
+
+        .stat-card p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: end;
+            height: 200px;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .bar {
+            background: linear-gradient(to top, #ffd700, #ffed4e);
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            min-width: 60px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            background: linear-gradient(to top, #ffed4e, #fff);
+        }
+
+        .bar-label {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            text-align: center;
+            color: white;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #2c5f2d;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .no-data {
+            text-align: center;
+            opacity: 0.7;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>📊 Analytics Dashboard</h1>
+            <p>Islamic Will Website Statistics</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="refreshStats()">🔄 Refresh</button>
+            <button class="btn" onclick="exportData()">📥 Export Data</button>
+            <button class="btn" onclick="showWeeklyReport()">📅 Weekly Report</button>
+            <button class="btn" onclick="clearData()">🗑️ Clear Data</button>
+            <button class="btn" onclick="window.open('../index.html', '_blank')">🏠 Back to Site</button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be populated here -->
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Page Views Distribution</div>
+            <div class="bar-chart" id="pageViewsChart">
+                <!-- Chart will be populated here -->
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Daily Activity (Last 7 Days)</div>
+            <div class="bar-chart" id="dailyActivityChart">
+                <!-- Chart will be populated here -->
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="chart-title">System Information</div>
+            <div id="systemInfo">
+                <!-- System info will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Analytics Dashboard Script
+        let stats = {};
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            setInterval(refreshStats, 30000); // Auto-refresh every 30 seconds
+        });
+
+        function loadStats() {
+            const visitorStats = localStorage.getItem('islamicWillVisitorStats');
+            if (visitorStats) {
+                stats = JSON.parse(visitorStats);
+                displayStats();
+            } else {
+                displayNoData();
+            }
+        }
+
+        function refreshStats() {
+            loadStats();
+            showNotification('📊 Statistics refreshed!');
+        }
+
+        function displayStats() {
+            displayOverviewStats();
+            displayPageViewsChart();
+            displayDailyActivityChart();
+            displaySystemInfo();
+        }
+
+        function displayOverviewStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayStats = stats.dailyStats && stats.dailyStats[today] ? stats.dailyStats[today] : { visits: 0, pageViews: 0, uniqueVisitors: 0 };
+            const weeklyStats = getWeeklyStats();
+
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <h3>${stats.totalVisits || 0}</h3>
+                    <p>Total Visits</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">All time</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.pageViews || 0}</h3>
+                    <p>Page Views</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">All time</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${stats.uniqueVisitors || 0}</h3>
+                    <p>Unique Visitors</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">All time</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${todayStats.visits}</h3>
+                    <p>Today's Visits</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">${new Date().toLocaleDateString()}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${todayStats.pageViews}</h3>
+                    <p>Today's Page Views</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">${new Date().toLocaleDateString()}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>${weeklyStats.visits}</h3>
+                    <p>Weekly Visits</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Last 7 days</p>
+                </div>
+            `;
+        }
+
+        function displayPageViewsChart() {
+            const pages = stats.pages || {};
+            const chartContainer = document.getElementById('pageViewsChart');
+            
+            if (Object.keys(pages).length === 0) {
+                chartContainer.innerHTML = '<div class="no-data">No page view data available</div>';
+                return;
+            }
+
+            const maxViews = Math.max(...Object.values(pages));
+            chartContainer.innerHTML = '';
+
+            Object.entries(pages).forEach(([page, views]) => {
+                const height = maxViews > 0 ? (views / maxViews) * 150 : 10;
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = height + 'px';
+                bar.innerHTML = `
+                    <div class="bar-value">${views}</div>
+                    <div class="bar-label">${formatPageName(page)}</div>
+                `;
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        function displayDailyActivityChart() {
+            const dailyStats = stats.dailyStats || {};
+            const chartContainer = document.getElementById('dailyActivityChart');
+            
+            if (Object.keys(dailyStats).length === 0) {
+                chartContainer.innerHTML = '<div class="no-data">No daily activity data available</div>';
+                return;
+            }
+
+            // Get last 7 days
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                last7Days.push(date.toISOString().split('T')[0]);
+            }
+
+            const dailyVisits = last7Days.map(date => dailyStats[date] ? dailyStats[date].visits : 0);
+            const maxVisits = Math.max(...dailyVisits);
+            
+            chartContainer.innerHTML = '';
+
+            last7Days.forEach((date, index) => {
+                const visits = dailyVisits[index];
+                const height = maxVisits > 0 ? (visits / maxVisits) * 150 : 10;
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = height + 'px';
+                bar.innerHTML = `
+                    <div class="bar-value">${visits}</div>
+                    <div class="bar-label">${formatDate(date)}</div>
+                `;
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        function displaySystemInfo() {
+            const systemInfo = document.getElementById('systemInfo');
+            const firstVisit = stats.firstVisit ? new Date(stats.firstVisit).toLocaleString() : 'N/A';
+            const lastVisit = stats.lastVisit ? new Date(stats.lastVisit).toLocaleString() : 'N/A';
+            const browser = stats.browserInfo ? stats.browserInfo.name : 'Unknown';
+            const device = stats.deviceInfo ? stats.deviceInfo.type : 'Unknown';
+
+            systemInfo.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div><strong>First Visit:</strong><br>${firstVisit}</div>
+                    <div><strong>Last Visit:</strong><br>${lastVisit}</div>
+                    <div><strong>Primary Browser:</strong><br>${browser}</div>
+                    <div><strong>Primary Device:</strong><br>${device}</div>
+                    <div><strong>Data Storage:</strong><br>Local Storage</div>
+                    <div><strong>Tracking Method:</strong><br>Frontend Only</div>
+                </div>
+            `;
+        }
+
+        function displayNoData() {
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card" style="grid-column: 1 / -1;">
+                    <div class="no-data">
+                        <h3>No Data Available</h3>
+                        <p>Start visiting the website to see statistics here.</p>
+                        <button class="btn" onclick="window.open('../index.html', '_blank')" style="margin-top: 15px;">
+                            Visit Website
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getWeeklyStats() {
+            const dailyStats = stats.dailyStats || {};
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            
+            let weeklyVisits = 0;
+            let weeklyPageViews = 0;
+            
+            Object.entries(dailyStats).forEach(([date, data]) => {
+                if (new Date(date) >= weekAgo) {
+                    weeklyVisits += data.visits || 0;
+                    weeklyPageViews += data.pageViews || 0;
+                }
+            });
+            
+            return { visits: weeklyVisits, pageViews: weeklyPageViews };
+        }
+
+        function formatPageName(page) {
+            return page.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(stats, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `islamic-will-stats-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(link.href);
+            showNotification('📥 Data exported successfully!');
+        }
+
+        function showWeeklyReport() {
+            const weeklyStats = getWeeklyStats();
+            const avgDaily = Math.round(weeklyStats.visits / 7);
+            
+            alert(`📅 Weekly Report (Last 7 Days):\n\n` +
+                  `• Total Visits: ${weeklyStats.visits}\n` +
+                  `• Total Page Views: ${weeklyStats.pageViews}\n` +
+                  `• Average Daily Visits: ${avgDaily}\n` +
+                  `• Most Active Day: ${getMostActiveDay()}`);
+        }
+
+        function getMostActiveDay() {
+            const dailyStats = stats.dailyStats || {};
+            let maxDate = '';
+            let maxVisits = 0;
+            
+            Object.entries(dailyStats).forEach(([date, data]) => {
+                if ((data.visits || 0) > maxVisits) {
+                    maxVisits = data.visits || 0;
+                    maxDate = date;
+                }
+            });
+            
+            return maxDate ? new Date(maxDate).toLocaleDateString() : 'N/A';
+        }
+
+        function clearData() {
+            if (confirm('⚠️ Are you sure you want to clear all visitor statistics? This action cannot be undone.')) {
+                localStorage.removeItem('islamicWillVisitorStats');
+                sessionStorage.removeItem('islamicWillSession');
+                showNotification('🗑️ All data cleared!');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 10000;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            // Add slide-in animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
