@@ -96,6 +96,14 @@
         <priority>0.80</priority>
     </url>
     
+    <!-- Site Navigation -->
+    <url>
+        <loc>https://islamicwillcreator.org/sitemap.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.70</priority>
+    </url>
+    
     <!-- Additional language versions (when available) -->
     <url>
         <loc>https://islamicwillcreator.org/ar/</loc>

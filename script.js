@@ -100,11 +100,8 @@ function initializeFormHandlers() {
         willForm.addEventListener('submit', handleWillSubmission);
     }
     
-    // Feedback form submission
-    const feedbackForm = document.getElementById('feedback-form');
-    if (feedbackForm) {
-        feedbackForm.addEventListener('submit', handleFeedbackSubmission);
-    }
+    // Feedback form submission is handled by feedback-system.js (EmailJS)
+    // Remove legacy handler to avoid duplicate submissions and wrong modal usage
     
     // File import handler
     const importFile = document.getElementById('importFile');
@@ -141,19 +138,28 @@ function initializeModalHandlers() {
     const modal = document.getElementById('success-modal');
     const closeBtn = document.querySelector('.close');
     
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
+    if (modal && closeBtn) {
+        closeBtn.addEventListener('click', function() {
             modal.style.display = 'none';
-        }
-    });
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
     
-    // Download button handlers
-    document.getElementById('download-pdf').addEventListener('click', downloadPDF);
-    document.getElementById('download-json').addEventListener('click', downloadJSON);
+    // Download button handlers with null checks
+    const pdfBtn = document.getElementById('download-pdf');
+    const jsonBtn = document.getElementById('download-json');
+    
+    if (pdfBtn) {
+        pdfBtn.addEventListener('click', downloadPDF);
+    }
+    if (jsonBtn) {
+        jsonBtn.addEventListener('click', downloadJSON);
+    }
 }
 
 // Dynamic form functions
@@ -414,64 +420,7 @@ function handleWillSubmission(e) {
     }
 }
 
-function handleFeedbackSubmission(e) {
-    e.preventDefault();
-    
-    try {
-        const formData = new FormData(e.target);
-        const feedbackData = collectFeedbackData(formData);
-        
-        // Create email content
-        const emailSubject = `Islamic Will Creator Feedback - ${feedbackData.category}`;
-        const emailBody = `
-Dear Islamic Will Creator Team,
-
-I would like to provide the following feedback about your application:
-
-FEEDBACK CATEGORY: ${feedbackData.category}
-RATING: ${feedbackData.rating}/5 stars
-
-FEEDBACK DETAILS:
-${feedbackData.feedbackText}
-
-SUGGESTIONS FOR IMPROVEMENT:
-${feedbackData.suggestions || 'None provided'}
-
-CONTACT INFORMATION:
-Name: ${feedbackData.contactName || 'Anonymous'}
-Email: ${feedbackData.contactEmail || 'Not provided'}
-Phone: ${feedbackData.contactPhone || 'Not provided'}
-
-TECHNICAL INFORMATION:
-Browser: ${feedbackData.browserInfo}
-Device: ${feedbackData.deviceInfo}
-Submission Date: ${new Date().toLocaleString()}
-
-Thank you for your time in developing this Islamic will creation tool.
-
-Best regards,
-${feedbackData.contactName || 'Anonymous User'}
-        `;
-        
-        // Create mailto link
-        const mailtoLink = `mailto:rifa.numis@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-        
-        // Open email client
-        window.location.href = mailtoLink;
-        
-        // Show success message
-        showSuccessModal('Email Client Opened!', 'Your feedback email has been prepared and opened in your default email client. Please send the email to complete your feedback submission.');
-        
-        // Reset form after a delay to allow email to open
-        setTimeout(() => {
-            e.target.reset();
-        }, 1000);
-        
-    } catch (error) {
-        console.error('Error submitting feedback:', error);
-        showAlert('An error occurred while preparing your feedback email. Please try again.', 'error');
-    }
-}
+// Legacy feedback submission handler removed.
 
 // Data collection functions
 function collectWillData(formData) {
@@ -773,6 +722,12 @@ function populateExecutors(executors) {
 // Download functions
 function downloadPDF() {
     try {
+        // Check if jsPDF is available
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            showAlert('PDF library not loaded. Please refresh the page and try again.', 'error');
+            return;
+        }
+        
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         let pageNumber = 1;
@@ -1468,6 +1423,68 @@ function downloadPDF() {
         
         yPosition += 10;
         
+        // Add Inheritance Calculation Results if available
+        const willResultsContent = document.getElementById('willResultsContent');
+        if (willResultsContent && willResultsContent.innerHTML.trim() !== '') {
+            // Check if we need a new page
+            if (yPosition > 180) {
+                yPosition = addNewPage();
+            }
+            
+            addSectionHeader(doc, 'INHERITANCE DISTRIBUTION CALCULATION', leftMargin, yPosition);
+            yPosition += 12;
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            doc.text('Based on the surviving relatives information provided, the inheritance distribution is as follows:', leftMargin, yPosition);
+            yPosition += lineHeight + 5;
+            
+            // Get the calculation results from the will calculator
+            const resultRows = willResultsContent.querySelectorAll('.result-row');
+            if (resultRows.length > 0) {
+                doc.setFontSize(11);
+                doc.setTextColor(44, 95, 45);
+                doc.text('Inheritance Shares:', leftMargin, yPosition);
+                yPosition += lineHeight + 3;
+                
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                
+                resultRows.forEach((row, index) => {
+                    const heirName = row.querySelector('.heir-name')?.textContent || '';
+                    const heirShare = row.querySelector('.heir-share')?.textContent || '';
+                    const heirPercentage = row.querySelector('.heir-percentage')?.textContent || '';
+                    
+                    if (heirName && heirShare && heirPercentage) {
+                        doc.text(`${index + 1}. ${heirName}: ${heirShare} (${heirPercentage})`, leftMargin + 5, yPosition);
+                        yPosition += lineHeight;
+                    }
+                });
+                
+                yPosition += 8;
+            }
+            
+            // Add calculation notes
+            doc.setFontSize(9);
+            doc.setTextColor(100, 100, 100);
+            const calculationNotes = [
+                '• These calculations are based on Islamic inheritance law (Mirath)',
+                '• Percentages apply to the net estate after debts and funeral expenses',
+                '• Up to 1/3 of the estate can be allocated to charitable bequests (Wasiyya)',
+                '• Consult Islamic scholars for complex inheritance situations'
+            ];
+            
+            calculationNotes.forEach(note => {
+                if (yPosition > 270) {
+                    yPosition = addNewPage();
+                }
+                doc.text(note, leftMargin, yPosition);
+                yPosition += lineHeight;
+            });
+            
+            yPosition += 10;
+        }
+        
         // Source reference
         doc.setFontSize(9);
         doc.setTextColor(100, 100, 100);
@@ -1571,13 +1588,7 @@ function resetForm() {
     }
 }
 
-function resetFeedbackForm() {
-    if (confirm('Are you sure you want to reset the feedback form?')) {
-        document.getElementById('feedback-form').reset();
-        autoDetectTechnicalInfo();
-        showAlert('Feedback form has been reset successfully.', 'success');
-    }
-}
+// resetFeedbackForm is provided by feedback-system.js to avoid duplicate definitions
 
 function resetDynamicSection(containerId, addFunction) {
     const container = document.getElementById(containerId);
@@ -2210,6 +2221,12 @@ function exportCalculatorResults() {
             return;
         }
         
+        // Check if jsPDF is available
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            showAlert('PDF library not loaded. Please refresh the page and try again.', 'error');
+            return;
+        }
+        
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
@@ -2452,5 +2469,25 @@ function exportCalculatorResults() {
     } catch (error) {
         console.error('Error exporting results:', error);
         showAlert('Error exporting results. Please try again.', 'error');
+    }
+}
+
+// ===== WILL INHERITANCE CALCULATOR FUNCTIONS =====
+
+function toggleInheritanceCalculator() {
+    const calculator = document.getElementById('willInheritanceCalculator');
+    const button = document.getElementById('toggleCalculator');
+    
+    if (calculator.style.display === 'none') {
+        calculator.style.display = 'block';
+        button.innerHTML = '<i class="fas fa-calculator"></i> Hide Inheritance Calculator';
+        button.classList.add('active');
+        
+        // Scroll to calculator
+        calculator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        calculator.style.display = 'none';
+        button.innerHTML = '<i class="fas fa-calculator"></i> Show Inheritance Calculator';
+        button.classList.remove('active');
     }
 }
