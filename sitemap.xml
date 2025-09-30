@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <!-- Main page - Highest priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://islamicwillcreator.org/ar/"/>
+        <xhtml:link rel="alternate" hreflang="ur" href="https://islamicwillcreator.org/ur/"/>
+        <xhtml:link rel="alternate" hreflang="id" href="https://islamicwillcreator.org/id/"/>
+        <xhtml:link rel="alternate" hreflang="ms" href="https://islamicwillcreator.org/ms/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://islamicwillcreator.org/tr/"/>
+        <xhtml:link rel="alternate" hreflang="fa" href="https://islamicwillcreator.org/fa/"/>
+        <xhtml:link rel="alternate" hreflang="bn" href="https://islamicwillcreator.org/bn/"/>
+    </url>
+    
+    <!-- Islamic Inheritance Calculator - Very high priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/#inheritance-calculator</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    
+    <!-- Create Islamic Will - Very high priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/#create-will</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    
+    <!-- Inheritance Schedule - High priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/#inheritance-schedule</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    
+    <!-- User Manual / Islamic Inheritance Guide - High priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/#user-manual</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    
+    <!-- Feedback Page - Medium priority -->
+    <url>
+        <loc>https://islamicwillcreator.org/#feedback</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.60</priority>
+    </url>
+    
+    <!-- Analytics Dashboard - Low priority (for admin use) -->
+    <url>
+        <loc>https://islamicwillcreator.org/analytics.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.30</priority>
+    </url>
+    
+    <!-- Legal Pages - High priority for trust and compliance -->
+    <url>
+        <loc>https://islamicwillcreator.org/privacy-policy.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.75</priority>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/terms-of-use.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.75</priority>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/disclaimer.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.75</priority>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/legal-guidelines.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>quarterly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    
+    <!-- Site Navigation -->
+    <url>
+        <loc>https://islamicwillcreator.org/sitemap.html</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.70</priority>
+    </url>
+    
+    <!-- Additional language versions (when available) -->
+    <url>
+        <loc>https://islamicwillcreator.org/ar/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://islamicwillcreator.org/ar/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/ur/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="ur" href="https://islamicwillcreator.org/ur/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/id/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="id" href="https://islamicwillcreator.org/id/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/ms/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="ms" href="https://islamicwillcreator.org/ms/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/tr/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://islamicwillcreator.org/tr/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/fa/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="fa" href="https://islamicwillcreator.org/fa/"/>
+    </url>
+    
+    <url>
+        <loc>https://islamicwillcreator.org/bn/</loc>
+        <lastmod>2025-09-23T00:00:00+00:00</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://islamicwillcreator.org/"/>
+        <xhtml:link rel="alternate" hreflang="bn" href="https://islamicwillcreator.org/bn/"/>
+    </url>
+</urlset>

@@ -1,0 +1,57 @@
+User-agent: *
+Allow: /
+
+# High priority pages for Islamic inheritance
+Allow: /index.html
+Allow: /#inheritance-calculator
+Allow: /#create-will
+Allow: /#inheritance-schedule
+Allow: /#user-manual
+
+# Analytics and documentation
+Allow: /analytics.html
+Allow: /README-ANALYTICS.md
+
+# Static assets
+Allow: /styles.css
+Allow: /script.js
+Allow: /visitor-stats.js
+Allow: /third-party-analytics.js
+Allow: /seo-optimizer.js
+
+# Images and icons
+Allow: /favicon.ico
+Allow: /apple-touch-icon.png
+Allow: /favicon-16x16.png
+Allow: /favicon-32x32.png
+
+# Important: Sitemap location
+Sitemap: https://islamic-will-calculator.com/sitemap.xml
+
+# Crawling preferences
+Crawl-delay: 1
+
+# Special directives for Islamic content
+# Priority pages for Islamic inheritance searches
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# Block access to analytics data (privacy)
+Disallow: /analytics.html*showStats=true
+Disallow: /*?debug=*
+Disallow: /*#debug
+
+# Block backup and temporary files
+Disallow: /*_backup.*
+Disallow: /*backup.*
+Disallow: /*.bak
+Disallow: /*.tmp

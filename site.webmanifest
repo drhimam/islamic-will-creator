@@ -1,0 +1,61 @@
+{
+    "name": "Islamic Will & Inheritance Calculator",
+    "short_name": "Islamic Will",
+    "description": "Free Islamic inheritance calculator and Muslim will creation tool. Calculate Shariah-compliant inheritance distribution according to Quran and Sunnah.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#2c5f2d",
+    "theme_color": "#2c5f2d",
+    "orientation": "portrait-primary",
+    "lang": "en",
+    "scope": "/",
+    "categories": ["finance", "education", "lifestyle"],
+    "icons": [],
+    "screenshots": [
+        {
+            "src": "/screenshot-mobile.png",
+            "sizes": "540x720",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot-desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Calculate Inheritance",
+            "short_name": "Calculator",
+            "description": "Open Islamic inheritance calculator",
+            "url": "/#inheritance-calculator",
+            "icons": [
+                {
+                    "src": "/calculator-icon.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Create Will",
+            "short_name": "Create Will",
+            "description": "Create Islamic will online",
+            "url": "/#create-will",
+            "icons": [
+                {
+                    "src": "/will-icon.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "dir": "auto",
+    "iarc_rating_id": "",
+    "edge_side_panel": {
+        "preferred_width": 400
+    }
+}
