@@ -254,8 +254,8 @@ This tool provides guidance based on general Islamic principles and should not b
 
 **Md Hasan Imam**
 - 🌐 Website: [islamicwillcreator.org](https://islamicwillcreator.org)
-- 💼 LinkedIn: [linkedin.com/in/hasanimam](https://linkedin.com/in/hasanimam)
-- 🐙 GitHub: [github.com/hasanimam](https://github.com/hasanimam)
+- 💼 LinkedIn: [linkedin.com/in/drhimam](https://linkedin.com/in/drhimam)
+- 🐙 GitHub: [https://github.com/drhimam]
 
 ---
 
@@ -296,5 +296,6 @@ May Allah accept this work and make it a source of benefit (فائدة) for the 
 **🌟 Star this repository if it benefits you or the Muslim community!**
 
 ---
+
 
 *Made with ❤️ for the Muslim Ummah | الأمة الإسلامية*
